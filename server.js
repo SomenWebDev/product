@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+const router = require("./src/routes/product");
+
 const rateLimit = require("express-rate-limit");
 
 const cors = require("cors");
@@ -23,6 +25,12 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+
+app.use("/product/v1", router);
+
+app.use("*", (req, res) => {
+  res.status(404).json({ status: "failed", data: "Not Found" });
+});
 
 const port = process.env.PORT || 5000;
 
